@@ -8,6 +8,4 @@ class ApiConfig {
   static const String pageSize = '&pageSize=';
   static const String page = '&page=';
   static const String qApiKey = '&apiKey=';
-
-  // https://newsapi.org/v2/top-headlines?country=id&category=health&pagSize=14&page=2&apiKey=ed9885670748417a84878d19f34ef35c
 }

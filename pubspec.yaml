@@ -30,15 +30,15 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.2.2
-  carousel_slider: ^4.1.1
-  connectivity_plus: ^2.3.7
+
   cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_native_splash: ^2.2.10+1
   google_fonts: ^3.0.1
-  hive_flutter: ^1.1.0
+
   http: ^0.13.5
   hydrated_bloc: ^8.1.0
   intl: ^0.17.0
@@ -47,9 +47,15 @@ dependencies:
   shimmer: ^2.0.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/ic_klinik.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

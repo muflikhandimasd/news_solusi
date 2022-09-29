@@ -1,19 +1,21 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:news_solusi/app/helpers/api_config.dart';
 import 'package:news_solusi/app/models/news_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:equatable/equatable.dart';
 part 'news_state.dart';
 
-class NewsCubit extends Cubit<NewsState> {
+class NewsCubit extends Cubit<NewsState> with HydratedMixin {
   NewsCubit() : super(NewsLoading());
 
   static final RefreshController refreshController = RefreshController();
+  static final PageController pageController =
+      PageController(viewportFraction: 0.8);
 
   void init() {
     getAllNews();
@@ -77,5 +79,28 @@ class NewsCubit extends Cubit<NewsState> {
 
   void onRefresh() {
     getAllNews();
+  }
+
+  @override
+  NewsState? fromJson(Map<String, dynamic> json) {
+    try {
+      List<Article> articles = [];
+      final listArticle = (json['article'] as List)
+          .map((e) => Article.fromJson(e as Map<String, dynamic>))
+          .toList();
+      articles = listArticle;
+      return NewsLoaded._(articles: articles);
+    } catch (e) {
+      log('Error Hydrated $e');
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(NewsState state) {
+    if (state is NewsLoaded) {
+      return state.toJson();
+    }
+    return null;
   }
 }

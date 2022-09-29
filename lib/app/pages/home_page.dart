@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,13 +10,19 @@ import 'package:intl/intl.dart';
 import 'package:news_solusi/app/cubit/news_cubit.dart';
 import 'package:news_solusi/app/helpers/theme_config.dart';
 import 'package:news_solusi/app/models/news_model.dart';
-import 'package:news_solusi/app/ui/pages/detail_page.dart';
+import 'package:news_solusi/app/pages/detail_page.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int activePage = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,21 +40,174 @@ class HomePage extends StatelessWidget {
               BlocBuilder<NewsCubit, NewsState>(
                 builder: (context, state) {
                   if (state is NewsLoading) {
+                    // return Expanded(
+                    //   child: Shimmer.fromColors(
+                    //     baseColor: Colors.grey[300]!,
+                    //     highlightColor: Colors.grey[100]!,
+                    //     child: ListView.builder(
+                    //       itemCount: 6,
+                    //       itemBuilder: (context, index) {
+                    //         return Card(
+                    //           elevation: 1.0,
+                    //           shape: RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(16),
+                    //           ),
+                    //           child: const SizedBox(height: 80),
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // );
                     return Expanded(
                       child: Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
-                        child: ListView.builder(
-                          itemCount: 6,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 1.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.21,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(defaultBorder),
                               ),
-                              child: const SizedBox(height: 80),
-                            );
-                          },
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, left: 21, bottom: 8),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        'INFO ANTRIAN',
+                                        style: whiteTextStyle.copyWith(
+                                            fontSize: 12, fontWeight: bold),
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 1,
+                                    color: whiteColor,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 15, top: 13, left: 23),
+                                    child: Row(
+                                      children: [
+                                        buildAntrian(
+                                            nomor: '',
+                                            desc: '',
+                                            asset: 'assets/icons/ic_nomor.png'),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        buildAntrian(
+                                            nomor: '',
+                                            desc: '',
+                                            asset: 'assets/icons/ic_sisa.png'),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '',
+                                                  style: GoogleFonts.rubik(
+                                                      color: const Color(
+                                                        0xffFFF9AA,
+                                                      ),
+                                                      fontSize: 9,
+                                                      fontWeight: medium),
+                                                ),
+                                                Text(
+                                                  '',
+                                                  style:
+                                                      whiteTextStyle.copyWith(
+                                                          fontSize: 9,
+                                                          fontWeight: medium),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '',
+                                                  style: GoogleFonts.rubik(
+                                                      color: const Color(
+                                                        0xffFFF9AA,
+                                                      ),
+                                                      fontSize: 9,
+                                                      fontWeight: medium),
+                                                ),
+                                                Text(
+                                                  '',
+                                                  style:
+                                                      whiteTextStyle.copyWith(
+                                                          fontSize: 9,
+                                                          fontWeight: medium),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 23,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                buildIcon(
+                                    asset: 'assets/icons/ic_klinik.png',
+                                    color: primaryBlue,
+                                    desc: ''),
+                                buildIcon(
+                                    asset: 'assets/icons/ic_riwayat.png',
+                                    color: primaryBlue,
+                                    desc: ''),
+                                buildIcon(
+                                    asset: 'assets/icons/ic_scan.png',
+                                    color: purpleColor,
+                                    desc: ''),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 13,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                buildIcon(
+                                    asset: 'assets/icons/ic_klinik.png',
+                                    color: primaryBlue,
+                                    desc: ''),
+                                buildIcon(
+                                    asset: 'assets/icons/ic_riwayat.png',
+                                    color: primaryBlue,
+                                    desc: ''),
+                                buildIcon(
+                                    asset: 'assets/icons/ic_scan.png',
+                                    color: purpleColor,
+                                    desc: ''),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -140,15 +298,40 @@ class HomePage extends StatelessWidget {
               const SizedBox(
                 height: 13,
               ),
-              CarouselSlider.builder(
-                itemCount: urlImages.length,
-                itemBuilder: (context, index, realIndex) {
-                  final urlImage = urlImages[index];
-
-                  return buildImage(urlImage, index);
-                },
-                options: CarouselOptions(),
+              SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: PageView.builder(
+                  itemCount: urlImages.length,
+                  pageSnapping: true,
+                  controller: NewsCubit.pageController,
+                  onPageChanged: (value) {
+                    setState(() {
+                      activePage = value;
+                    });
+                  },
+                  itemBuilder: (_, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.all(10),
+                      // child: Image.network(
+                      //   urlImages[index],
+                      //   fit: BoxFit.cover,
+                      // ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                urlImages[index],
+                              ))),
+                    );
+                  },
+                ),
               ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: indicators(urlImages.length, activePage)),
               BlocBuilder<NewsCubit, NewsState>(
                 builder: (context, state) {
                   if (state is NewsLoading) {
@@ -177,7 +360,7 @@ class HomePage extends StatelessWidget {
                     final List<Article> articles = state.articles;
 
                     return ListView.separated(
-                        separatorBuilder: (_, _i) {
+                        separatorBuilder: (_, i) {
                           return const SizedBox(
                             height: 10,
                           );
@@ -218,7 +401,6 @@ class HomePage extends StatelessWidget {
                                             child:
                                                 CircularProgressIndicator())),
                                     errorWidget: (context, url, error) {
-                                      print('ERROR url $url');
                                       return Image.asset(
                                           'assets/images/Image_not_available.png');
                                     }),
@@ -482,7 +664,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Dokter anda',
                           style: GoogleFonts.rubik(
-                              color: Color(
+                              color: const Color(
                                 0xffFFF9AA,
                               ),
                               fontSize: 9,
@@ -504,7 +686,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Klinik / RS anda',
                           style: GoogleFonts.rubik(
-                              color: Color(
+                              color: const Color(
                                 0xffFFF9AA,
                               ),
                               fontSize: 9,
@@ -555,8 +737,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-List<Widget> _itemNews = [];
-
 List<String> urlImages = [
   'https://images.unsplash.com/photo-1554734867-bf3c00a49371?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
   'https://images.unsplash.com/photo-1485848395967-65dff62dc35b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
@@ -565,7 +745,15 @@ List<String> urlImages = [
   'https://images.unsplash.com/photo-1533042789716-e9a9c97cf4ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
 ];
 
-
-/**
- * 
- */
+List<Widget> indicators(imagesLength, currentIndex) {
+  return List<Widget>.generate(imagesLength, (index) {
+    return Container(
+      margin: const EdgeInsets.all(3),
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+          color: currentIndex == index ? Colors.black : Colors.black26,
+          shape: BoxShape.circle),
+    );
+  });
+}

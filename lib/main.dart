@@ -1,19 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:news_solusi/app/cubit/news_cubit.dart';
-import 'package:news_solusi/app/ui/pages/home_page.dart';
+import 'package:news_solusi/app/pages/home_page.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'app/ui/pages/detail_page.dart';
-
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -31,6 +29,7 @@ void main() async {
     () => runApp(const MyApp()),
     storage: storage,
   );
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
@@ -51,7 +50,7 @@ class MyAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
